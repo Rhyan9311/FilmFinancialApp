@@ -1,14 +1,20 @@
-import React from 'react';
+import React from "react";
+import { Provider } from "react-redux";
 
-import Navbar from '../features/navbar/Navbar';
-import AppRoutes from './AppRoutes';
+import Navbar from "../features/navbar/Navbar";
+import AppRoutes from "./AppRoutes";
+import InvPrefForm from "../features/investmentPreferences/InvPrefForm";
+import store from "./store"; // assuming your store file is named store.js
 
 const App = () => {
   return (
-    <div>
-      <Navbar />
-      <AppRoutes />
-    </div>
+    <Provider store={store}>
+      <div>
+        <Navbar />
+        <AppRoutes />
+        <InvPrefForm />
+      </div>
+    </Provider>
   );
 };
 
