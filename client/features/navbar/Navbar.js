@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { logout } from "../../app/store";
 
 const Navbar = () => {
@@ -17,15 +17,39 @@ const Navbar = () => {
       <h1>Find Your Next Investor!</h1>
       <nav>
         {isLoggedIn ? (
-          <div>
-            {/* The navbar will show these links after you log in */}
-            <Link to="/home">Home</Link>
-            <Link to="/investmentPreferences">Investment Preferences</Link>
+          <div id="navbar" className="row">
+            <NavLink to="/" className="active">
+              Home
+            </NavLink>
+            &nbsp;
+            <NavLink to="/investmentPreferences" className="active">
+              Investment Preferences
+            </NavLink>
+            &nbsp;
+            {/* <NavLink to="/campusForm" className={"active"}>
+              Campus Form
+            </NavLink>
+            &nbsp;
+            <NavLink to="/students" className="active">
+              Students
+            </NavLink>
+            &nbsp;
+            <NavLink to="/addStudentForm" className={"active"}>
+              New Student
+            </NavLink> */}
             <button type="button" onClick={logoutAndRedirectHome}>
               Logout
             </button>
           </div>
         ) : (
+          // <div>
+          //   {/* The navbar will show these links after you log in */}
+          //   <Link to="/">Home</Link>
+          //   <Link to="/investmentPreferences">Investment Preferences</Link>
+            // <button type="button" onClick={logoutAndRedirectHome}>
+            //   Logout
+            // </button>
+          // </div>
           <div>
             {/* The navbar will show these links before you log in */}
             <Link to="/login">Login</Link>

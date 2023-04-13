@@ -4,11 +4,11 @@ import { Route, Routes } from "react-router-dom";
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import InvPrefForm from "../features/investmentPreferences/InvPrefForm";
+// import AllFilmmakers from "../features/filmmaker/AllFilmmakers"; // Add this line
+// import SingleFilmmaker from "../features/filmmaker/filmmaker"; // Add this line
+// import { fetchAllFilmmakersAsync } from "../features/filmmaker/allFilmmakers";
+// import { fetchSingleFilmmakerAsync } from "../features/filmmaker/filmmaker";
 import { me } from "./store";
-
-/**
- * COMPONENT
- */
 
 const AppRoutes = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
@@ -16,20 +16,23 @@ const AppRoutes = () => {
 
   useEffect(() => {
     dispatch(me());
-  }, []);
+    // dispatch(fetchAllFilmmakersAsync());
+    // dispatch(fetchSingleFilmmakerAsync());
+  }, [dispatch]);
 
   return (
     <div>
       {isLoggedIn ? (
         <Routes>
-          <Route path="/*" element={<Home />} />
-          <Route to="/home" element={<Home />} />
-          <Route path="/invPrefForm" element={<InvPrefForm />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/investmentPreferences" element={<InvPrefForm />} />
+          {/* <Route path="/filmmakers" element={<AllFilmmakers />} />
+          <Route path="/filmmakers/:id" element={<SingleFilmmaker />} /> */}
         </Routes>
       ) : (
         <Routes>
           <Route
-            path="/*"
+            path="/"
             element={<AuthForm name="login" displayName="Login" />}
           />
           <Route

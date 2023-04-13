@@ -12,10 +12,10 @@ const App = () => {
       <div>
         <Navbar />
         <AppRoutes />
-        <InvPrefForm />
       </div>
     </Provider>
   );
 };
 
 export default App;
+

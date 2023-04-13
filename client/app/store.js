@@ -2,13 +2,38 @@ import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import authReducer from '../features/auth/authSlice';
 import invPrefSlice from '../features/investmentPreferences/invPrefSlice';
+// import allFilmmakersSlice from '../features/filmmaker/allFilmmakersSlice';
 
 const store = configureStore({
-  reducer: { auth: authReducer },
+  reducer:
+  { auth: authReducer },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-  invPref: invPrefSlice,
+  invPrefForm: invPrefSlice,
+  // allFilmmakers: allFilmmakersSlice,
 
 });
 
 export default store;
 export * from '../features/auth/authSlice';
+// export * from '../features/filmmakers/allFilmmakersSlice';
+
+
+
+// import { configureStore } from '@reduxjs/toolkit';
+// import logger from 'redux-logger';
+// import authReducer from '../features/auth/authSlice';
+// import invPrefSlice from '../features/investmentPreferences/invPrefSlice';
+// import allFilmmakersSlice from '../features/filmmakers/allFilmmakersSlice';
+
+// const store = configureStore({
+//   reducer: {
+//     auth: authReducer,
+//     invPrefForm: invPrefSlice,
+//     allFilmmakers: allFilmmakersSlice
+//   },
+//   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+// });
+
+// export default store;
+// export * from '../features/auth/authSlice';
+// export * from '../features/filmmakers/allFilmmakersSlice';
