@@ -4,8 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import InvPrefForm from "../features/investmentPreferences/InvPrefForm";
-import AllFilmmakers from "../features/filmmaker/AllFilmmakers";
-import Filmmaker from "../features/filmmaker/filmmaker";
+// import AllFilmmakers from "../features/filmmaker/AllFilmmakers";
+// import Filmmaker from "../features/filmmaker/filmmaker";
 // import { fetchAllFilmmakersAsync } from "../features/filmmaker/allFilmmakers";
 // import { fetchSingleFilmmakerAsync } from "../features/filmmaker/filmmaker";
 import { me } from "./store";
@@ -27,7 +27,7 @@ const AppRoutes = () => {
           <Route path="/" element={<Home />} />
           <Route path="/investmentPreferences" element={<InvPrefForm />} />
           {/* <Route path="/filmmakers" element={<AllFilmmakers />} /> */}
-          <Route path="/filmmakers/:id" element={<Filmmaker />} />
+          {/* <Route path="/filmmakers/:id" element={<Filmmaker />} /> */}
         </Routes>
       ) : (
         <Routes>
