@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Investment = require("../db/models/Investor");
+const Investment = require("../db/models/InvestorDB");
 const InvPrefForm = require("../db/models/InvPrefForm");
 const { Op } = require("sequelize");
 const {
