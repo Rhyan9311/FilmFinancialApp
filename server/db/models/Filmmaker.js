@@ -2,28 +2,24 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db");
 
-const Investment = db.define("investment", {
+const Filmmaker = db.define("filmmaker", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  symbol: {
+  email: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
-    type: DataTypes.FLOAT,
-    allowNull: false,
-  },
-  quantity: {
+  quantityofProjects: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   genre: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  budget: {
+  yearsOfExperience: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
@@ -31,7 +27,14 @@ const Investment = db.define("investment", {
     type: DataTypes.BOOLEAN,
     allowNull: true,
   },
+  imageUrl: {
+    type: DataTypes.STRING,
+    defaultValue:
+      "https://cdn.pixabay.com/photo/2016/08/18/23/04/yale-university-1604158_1280.jpg",
+    validate: {
+      isUrl: true,
+    }
+  }
 });
 
-
-module.exports = Investment;
+module.exports = Filmmaker;

@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Investment },
+  models: { User, Investor, Filmmaker },
 } = require("../server/db");
 
 /**
@@ -19,52 +19,74 @@ async function seed() {
     User.create({ username: "murphy", password: "123" }),
   ]);
 
-  // Creating Investments
-  const investments = await Promise.all([
-    Investment.create({
-      name: "Stock A",
-      symbol: "STK-A",
-      price: 50.0,
-      quantity: 10,
+  // Creating Investors
+  const investors = await Promise.all([
+    Investor.create({
+      name: "Investor A",
+      riskTolerance: "low",
+      investmentAmount: 5000,
+      investmentLength: 24,
       userId: users[0].id,
     }),
-    Investment.create({
-      name: "Stock B",
-      symbol: "STK-B",
-      price: 75.0,
-      quantity: 5,
+    Investor.create({
+      name: "Investor B",
+      riskTolerance: "high",
+      investmentAmount: 10000,
+      investmentLength: 12,
       userId: users[0].id,
     }),
-    Investment.create({
-      name: "Stock C",
-      symbol: "STK-C",
-      price: 100.0,
-      quantity: 20,
+    Investor.create({
+      name: "Investor C",
+      riskTolerance: "medium",
+      investmentAmount: 8000,
+      investmentLength: 18,
+      userId: users[1].id,
+    }),
+  ]);
+
+  // Creating Filmmakers
+  const filmmakers = await Promise.all([
+    Filmmaker.create({
+      name: "Filmmaker A",
+      email: "filmmakerA@gmail.com",
+      imageUrl: "https://imageurl.com",
+      yearsOfExperience: 5,
+      userId: users[0].id,
+    }),
+    Filmmaker.create({
+      name: "Filmmaker B",
+      email: "filmmakerB@gmail.com",
+      imageUrl: "https://imageurl.com",
+      yearsOfExperience: 3,
       userId: users[1].id,
     }),
   ]);
 
   console.log(
-    `seeded ${users.length} users and ${investments.length} investments`
+    `seeded ${users.length} users, ${investors.length} investors, and ${filmmakers.length} filmmakers`
   );
-  console.log(`seeded successfully`);
+  console.log("seeded successfully");
   return {
     users: {
       cody: users[0],
       murphy: users[1],
     },
-    investments: {
-      a: investments[0],
-      b: investments[1],
-      c: investments[2],
+    investors: {
+      a: investors[0],
+      b: investors[1],
+      c: investors[2],
+    },
+    filmmakers: {
+      a: filmmakers[0],
+      b: filmmakers[1],
     },
   };
 }
 
 /*
- We've separated the `seed` function from the `runSeed` function.
- This way we can isolate the error handling and exit trapping.
- The `seed` function is concerned only with modifying the database.
+We've separated the seed function from the runSeed function.
+This way we can isolate the error handling and exit trapping.
+The seed function is concerned only with modifying the database.
 */
 async function runSeed() {
   console.log("seeding...");
@@ -81,13 +103,13 @@ async function runSeed() {
 }
 
 /*
-  Execute the `seed` function, IF we ran this module directly (`node seed`).
-  `Async` functions always return a promise, so we can use `catch` to handle
-  any errors that might occur inside of `seed`.
+Execute the seed function, IF we ran this module directly (node seed).
+Async functions always return a promise, so we can use catch to handle
+any errors that might occur inside of seed.
 */
 if (module === require.main) {
   runSeed();
 }
 
-// we export the seed function for testing purposes (see `./seed.spec.js`)
+// we export the seed function for testing purposes (see ./seed.spec.js)
 module.exports = seed;

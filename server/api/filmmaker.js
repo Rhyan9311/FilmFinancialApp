@@ -28,14 +28,6 @@ router.get("/filmmakers/:id", async (req, res, next) => {
   }
 });
 
-// export const getFilmmakers = async () => {
-//   const response = await fetch("/api/filmmakers");
-//   if (!response.ok) {
-//     throw new Error(`HTTP error! status: ${response.status}`);
-//   }
-//   return await response.json();
-// };
-
 router.get("/filmmakers", async (req, res, next) => {
   try {
     const filmmakers = await Filmmaker.findAll();

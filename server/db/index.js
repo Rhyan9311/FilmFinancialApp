@@ -3,15 +3,18 @@
 const db = require("./db");
 
 const User = require("./models/User");
-const Investment = require("./models/Investment");
+const Investor = require("./models/Investor");
+const Filmmaker = require("./models/Filmmaker");
 
 //associations could go here!
-User.hasMany(Investment);
+Filmmaker.hasMany(Investor);
+Investor.hasOne(Filmmaker);
 
 module.exports = {
   db,
   models: {
     User,
-    Investment,
+    Investor,
+    Filmmaker,
   },
 };

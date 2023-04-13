@@ -2,7 +2,7 @@
 const DecisionTree = require("decision-tree");
 const CollaborativeFiltering = require("collaborative-filtering");
 const NeuralNetwork = require("neural-network");
-const Investment = require("./db/models/Investment");
+const Investment = require("./db/models/Investor");
 const User = require("./db/models/User");
 
 // Define a function to get matching investments for a given user

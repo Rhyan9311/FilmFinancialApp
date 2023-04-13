@@ -1,11 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getFilmmakers } from "../../../server/api/filmmaker";
+import axios from "axios";
 
-export const fetchAllFilmmakers = createAsyncThunk(
-  "allFilmmakers/fetchAllFilmmakers",
+// export const fetchAllFilmmakers = createAsyncThunk(
+//   "filmmakers/fetchAllFilmmakers",
+//   async () => {
+//     const response = await getFilmmakers();
+//     return response.data;
+//   }
+// );
+
+export const fetchAllFilmmakersAsync = createAsyncThunk(
+  "filmmakers/fetchAllFilmmakers",
   async () => {
-    const response = await getFilmmakers();
-    return response.data;
+    try {
+      const { data } = await axios.get(`/api/filmmakers`);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
   }
 );
 

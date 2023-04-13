@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Investment = require("./Investment");
+const Investment = require("./Investor");
 
 const SALT_ROUNDS = 5;
 

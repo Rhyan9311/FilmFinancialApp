@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Investment = require("../db/models/Investment");
+const Investment = require("../db/models/Investor");
 const InvPrefForm = require("../db/models/InvPrefForm");
 const { Op } = require("sequelize");
 const {
@@ -70,7 +70,7 @@ router.get("/investmentPreferences/:userId", async (req, res) => {
 });
 
 // serve up a single investor by id
-router.get('/investments/:id', async (req, res, next) => {
+router.get("/investments/:id", async (req, res, next) => {
   try {
     const investment = await Investment.findByPk(req.params.id);
     if (!investment) {
@@ -85,7 +85,7 @@ router.get('/investments/:id', async (req, res, next) => {
 });
 
 // serve up all investors
-router.get('/investments', async (req, res, next) => {
+router.get("/investments", async (req, res, next) => {
   try {
     const investments = await Investment.findAll();
     res.json(investments);
@@ -95,28 +95,36 @@ router.get('/investments', async (req, res, next) => {
 });
 
 // remove a user from an investor's list by id
-router.delete('/investments/:investmentId/users/:userId', async (req, res, next) => {
-  try {
-    const investment = await Investment.findByPk(req.params.investmentId);
-    if (!investment) {
-      const error = new Error(`Investment with id ${req.params.investmentId} not found`);
-      error.status = 404;
-      throw error;
+router.delete(
+  "/investments/:investmentId/users/:userId",
+  async (req, res, next) => {
+    try {
+      const investment = await Investment.findByPk(req.params.investmentId);
+      if (!investment) {
+        const error = new Error(
+          `Investment with id ${req.params.investmentId} not found`
+        );
+        error.status = 404;
+        throw error;
+      }
+      await investment.removeUser(req.params.userId);
+      res.sendStatus(204);
+    } catch (err) {
+      next(err);
     }
-    await investment.removeUser(req.params.userId);
-    res.sendStatus(204);
-  } catch (err) {
-    next(err);
   }
-});
+);
 
 // update an existing investor
-router.put('/investments/:id', async (req, res, next) => {
+router.put("/investments/:id", async (req, res, next) => {
   try {
-    const [numUpdated, [updatedInvestment]] = await Investment.update(req.body, {
-      where: { id: req.params.id },
-      returning: true,
-    });
+    const [numUpdated, [updatedInvestment]] = await Investment.update(
+      req.body,
+      {
+        where: { id: req.params.id },
+        returning: true,
+      }
+    );
     if (numUpdated === 0) {
       const error = new Error(`Investment with id ${req.params.id} not found`);
       error.status = 404;
