@@ -12,9 +12,7 @@ Investor.hasOne(Filmmaker);
 
 module.exports = {
   db,
-  models: {
-    User,
-    Investor,
-    Filmmaker,
-  },
+  User,
+  Investor,
+  Filmmaker,
 };

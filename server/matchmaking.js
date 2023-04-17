@@ -1,7 +1,7 @@
 // Import required libraries and models
 const DecisionTree = require("decision-tree");
-const CollaborativeFiltering = require("collaborative-filtering");
-const NeuralNetwork = require("neural-network");
+const CollaborativeFilter = require("collaborative-filter");
+// const NeuralNetwork = require("neural-network");
 const Investment = require("./db/models/InvestorDB");
 const User = require("./db/models/UserDB");
 
@@ -34,16 +34,16 @@ async function getMatchingInvestments(userId) {
   dtree.train();
 
   // Train the collaborative filtering model on the investment features
-  const cf = new CollaborativeFiltering(features, "success", ["investorId"]);
+  const cf = new CollaborativeFilter(features, "success", ["investorId"]);
   cf.train();
 
-  // Train the neural network model on the investment features
-  const nn = new NeuralNetwork(features, "success", [
-    "genre",
-    "budget",
-    "investorId",
-  ]);
-  nn.train();
+  // // Train the neural network model on the investment features
+  // const nn = new NeuralNetwork(features, "success", [
+  //   "genre",
+  //   "budget",
+  //   "investorId",
+  // ]);
+  // nn.train();
 
   // Use the trained models to predict the success of each investment
   const matches = investments.map((investment) => {

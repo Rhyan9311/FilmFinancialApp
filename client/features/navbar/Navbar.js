@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <h1>Find Your Next Investor!</h1>
+      <h1>Welcome To Filmvestor!</h1>
       <nav>
         {isLoggedIn ? (
           <div id="navbar" className="row">
@@ -26,15 +26,15 @@ const Navbar = () => {
               Investment Preferences
             </NavLink>
             &nbsp;
-            {/* <NavLink to="/campusForm" className={"active"}>
-              Campus Form
+            <NavLink to="/investors" className={"active"}>
+              Investors
             </NavLink>
             &nbsp;
-            <NavLink to="/students" className="active">
-              Students
+            <NavLink to="/filmmakers" className="active">
+              Filmmakers
             </NavLink>
             &nbsp;
-            <NavLink to="/addStudentForm" className={"active"}>
+            {/* <NavLink to="/addStudentForm" className={"active"}>
               New Student
             </NavLink> */}
             <button type="button" onClick={logoutAndRedirectHome}>
@@ -46,9 +46,9 @@ const Navbar = () => {
           //   {/* The navbar will show these links after you log in */}
           //   <Link to="/">Home</Link>
           //   <Link to="/investmentPreferences">Investment Preferences</Link>
-            // <button type="button" onClick={logoutAndRedirectHome}>
-            //   Logout
-            // </button>
+          // <button type="button" onClick={logoutAndRedirectHome}>
+          //   Logout
+          // </button>
           // </div>
           <div>
             {/* The navbar will show these links before you log in */}

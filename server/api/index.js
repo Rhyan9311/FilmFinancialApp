@@ -1,13 +1,14 @@
 const router = require("express").Router();
 
 
-router.use("/users", require("./filmmaker"));
+router.use("/filmmakers", require("./filmmaker"));
+router.use("/investors", require("./investment"));
 
-router.use((req, res, next) => {
-  const error = new Error("Not Found");
-  error.status = 404;
-  next(error);
-});
+// router.use((req, res, next) => {
+//   const error = new Error("Not Found");
+//   error.status = 404;
+//   next(error);
+// });
 
 
 module.exports = router;

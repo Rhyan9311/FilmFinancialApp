@@ -1,15 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Investment = require("../db/models/InvestorDB");
-const InvPrefForm = require("../db/models/InvPrefForm");
 const { Op } = require("sequelize");
 const {
   investmentMatchmaking,
 } = require("../controllers/matchmakingController");
 const { getMatchingInvestments } = require("../matchmaking");
+const { User, Investor, Filmmaker } = require("../db");
 
 // Potential Investors Route
-router.get("/", async (req, res) => {
+router.get("/investor", async (req, res) => {
   const { genre, budget, successRate } = req.query;
 
   try {
@@ -37,10 +36,10 @@ router.get("/investmentPreferences", async (req, res) => {
 router.post("/investmentPreferences", async (req, res) => {
   try {
     const { userId, investmentPreferences } = req.body;
-    const invPrefForm = await InvPrefForm.create({
-      userId,
-      investmentPreferences,
-    });
+    const invPrefForm = await Investor.update(
+      { investmentPreferences },
+      { where: { userId } }
+    );
     res.json(invPrefForm);
   } catch (err) {
     console.error(err);
@@ -53,7 +52,7 @@ router.get("/investmentPreferences/:userId", async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const invPrefForm = await InvPrefForm.findOne({
+    const invPrefForm = await Investor.findOne({
       where: { userId },
       attributes: { exclude: ["createdAt", "updatedAt"] },
     });
@@ -70,25 +69,25 @@ router.get("/investmentPreferences/:userId", async (req, res) => {
 });
 
 // serve up a single investor by id
-router.get("/investments/:id", async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    const investment = await Investment.findByPk(req.params.id);
-    if (!investment) {
-      const error = new Error(`Investment with id ${req.params.id} not found`);
+    const investor = await Investor.findByPk(req.params.id);
+    if (!investor) {
+      const error = new Error(`Investor with id ${req.params.id} not found`);
       error.status = 404;
       throw error;
     }
-    res.json(investment);
+    res.json(investor);
   } catch (err) {
     next(err);
   }
 });
 
 // serve up all investors
-router.get("/investments", async (req, res, next) => {
+router.get("/investors", async (req, res, next) => {
   try {
-    const investments = await Investment.findAll();
-    res.json(investments);
+    const investors = await Investor.findAll();
+    res.json(investors);
   } catch (err) {
     next(err);
   }
@@ -96,18 +95,18 @@ router.get("/investments", async (req, res, next) => {
 
 // remove a user from an investor's list by id
 router.delete(
-  "/investments/:investmentId/users/:userId",
+  "/:userId",
   async (req, res, next) => {
     try {
-      const investment = await Investment.findByPk(req.params.investmentId);
-      if (!investment) {
+      const investor = await Investor.findByPk(req.params.investorId);
+      if (!investor) {
         const error = new Error(
-          `Investment with id ${req.params.investmentId} not found`
+          `Investor with id ${req.params.investorId} not found`
         );
         error.status = 404;
         throw error;
       }
-      await investment.removeUser(req.params.userId);
+      await investor.removeUser(req.params.userId);
       res.sendStatus(204);
     } catch (err) {
       next(err);
@@ -116,9 +115,9 @@ router.delete(
 );
 
 // update an existing investor
-router.put("/investments/:id", async (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
-    const [numUpdated, [updatedInvestment]] = await Investment.update(
+    const [numUpdated, [updatedInvestor]] = await Investor.update(
       req.body,
       {
         where: { id: req.params.id },
@@ -126,11 +125,11 @@ router.put("/investments/:id", async (req, res, next) => {
       }
     );
     if (numUpdated === 0) {
-      const error = new Error(`Investment with id ${req.params.id} not found`);
+      const error = new Error(`Investor with id ${req.params.id} not found`);
       error.status = 404;
       throw error;
     }
-    res.json(updatedInvestment);
+    res.json(updatedInvestor);
   } catch (err) {
     next(err);
   }

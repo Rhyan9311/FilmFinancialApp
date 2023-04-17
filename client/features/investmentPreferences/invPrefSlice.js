@@ -6,7 +6,7 @@ export const invPrefFormSlice = createSlice({
   reducers: {
     setInvestmentPreferences: (state, action) => {
       return {
-        age: action.payload.age,
+        genre: action.payload.genre,
         riskTolerance: action.payload.riskTolerance,
         investmentAmount: action.payload.investmentAmount,
         investmentLength: action.payload.investmentLength,

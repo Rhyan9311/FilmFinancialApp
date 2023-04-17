@@ -1,13 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+export const fetchFilmmaker = createAsyncThunk(
+  "filmmakers/fetchFilmmaker",
+  async (id) => {
+    try {
+      const { data } = await axios.get(`/api/filmmakers/${id}`);
+      console.log(data);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+const initialState = {
+  info: {},
+};
 export const filmmakerSlice = createSlice({
-  name: "filmmaker",
+  name: "filmmakers",
   initialState: {
-    filmmaker: null,
+    filmmaker: {},
     isLoading: false,
     error: null,
   },
+
   reducers: {
     fetchFilmmakerStart(state) {
       state.isLoading = true;
@@ -22,6 +39,21 @@ export const filmmakerSlice = createSlice({
       state.error = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchFilmmaker.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchFilmmaker.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.filmmaker = action.payload;
+      })
+      .addCase(fetchFilmmaker.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export const {
@@ -30,15 +62,4 @@ export const {
   fetchFilmmakerFailure,
 } = filmmakerSlice.actions;
 
-export const fetchFilmmaker = (filmmakerId) => async (dispatch) => {
-  dispatch(fetchFilmmakerStart());
-  try {
-    const response = await axios.get(`/api/filmmakers/${filmmakerId}`);
-    dispatch(fetchFilmmakerSuccess(response.data));
-  } catch (error) {
-    dispatch(fetchFilmmakerFailure(error.message));
-  }
-};
-
 export default filmmakerSlice.reducer;
-

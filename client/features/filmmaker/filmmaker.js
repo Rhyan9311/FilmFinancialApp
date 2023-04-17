@@ -6,7 +6,7 @@ import { fetchFilmmaker } from "./filmmakerSlice";
 const Filmmaker = () => {
   const { filmmakerId } = useParams();
   const dispatch = useDispatch();
-  const filmmaker = useSelector((state) => state.filmmaker.filmmaker);
+  const filmmaker = useSelector((state) => state.filmmakers.filmmaker);
 
   useEffect(() => {
     dispatch(fetchFilmmaker(filmmakerId));
@@ -14,7 +14,7 @@ const Filmmaker = () => {
 
   return (
     <div>
-      {filmmaker ? (
+      {Object.keys(filmmaker).length > 0 ? (
         <>
           <h2>{filmmaker.name}</h2>
           <p>Email: {filmmaker.email}</p>

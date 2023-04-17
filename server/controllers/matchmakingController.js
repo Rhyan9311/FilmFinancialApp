@@ -1,4 +1,4 @@
-const { User, Investment } = require("../models");
+const { Filmmaker, Investor } = require("../db");
 const decisionTree = require("decision-tree");
 // const collaborativeFiltering = require("collaborative-filtering");
 // const neuralNetwork = require("neural-network");

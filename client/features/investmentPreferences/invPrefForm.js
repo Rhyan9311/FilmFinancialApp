@@ -5,7 +5,7 @@ import { setInvestmentPreferences } from "./invPrefSlice";
 const InvPrefForm = () => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    age: "",
+    genre: "",
     riskTolerance: "",
     investmentAmount: "",
     investmentLength: "",
@@ -22,7 +22,7 @@ const InvPrefForm = () => {
     event.preventDefault();
     dispatch(setInvestmentPreferences(formData));
     setFormData({
-      age: "",
+      genre: "",
       riskTolerance: "",
       investmentAmount: "",
       investmentLength: "",
@@ -32,14 +32,22 @@ const InvPrefForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Investment Preferences</h2>
-      <label htmlFor="age">Age:</label>
-      <input
-        type="number"
-        id="age"
-        name="age"
+
+      <label htmlFor="genre">Genre:</label>
+      <select
+        id="genre"
+        name="genre"
+        value={formData.genre}
         onChange={handleChange}
-        value={formData.age}
-      />
+      >
+        <option value="">Select</option>
+        <option value="action">Action</option>
+        <option value="comedy">Comedy</option>
+        <option value="drama">Drama</option>
+        <option value="horror">Horror</option>
+        <option value="romance">Romance</option>
+        <option value="sci-fi">Sci-Fi</option>
+      </select>
 
       <label htmlFor="riskTolerance">Risk Tolerance:</label>
       <select
