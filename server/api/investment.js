@@ -1,24 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
-const {
-  investmentMatchmaking,
-} = require("../controllers/matchmakingController");
+// const {
+//   investmentMatchmaking,
+// } = require("../controllers/matchmakingController");
 const { getMatchingInvestments } = require("../matchmaking");
-const { User, Investor, Filmmaker } = require("../db");
+const { Investor } = require("../db");
 
-// Potential Investors Route
-router.get("/investor", async (req, res) => {
-  const { genre, budget, successRate } = req.query;
+// // Potential Investors Route
+// router.get("/investor", async (req, res) => {
+//   const { genre, budget, successRate } = req.query;
 
-  try {
-    const results = await investmentMatchmaking(genre, budget, successRate);
-    res.json(results);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-});
+//   try {
+//     const results = await investmentMatchmaking(genre, budget, successRate);
+//     res.json(results);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// });
 
 // Matching Investments Route
 router.get("/investmentPreferences", async (req, res) => {
@@ -68,6 +68,25 @@ router.get("/investmentPreferences/:userId", async (req, res) => {
   }
 });
 
+// serve up all investors
+router.get("/investors", async (req, res, next) => {
+  try {
+    const investors = await Investor.findAll();
+    res.json(investors);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/", async (req, res, next) => {
+  try {
+    const investors = await Investor.findAll();
+    res.json(investors);
+  } catch (err) {
+    next(err);
+  }
+});
+
 // serve up a single investor by id
 router.get("/:id", async (req, res, next) => {
   try {
@@ -83,47 +102,31 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-// serve up all investors
-router.get("/investors", async (req, res, next) => {
+// remove a user from an investor's list by id
+router.delete("/:userId", async (req, res, next) => {
   try {
-    const investors = await Investor.findAll();
-    res.json(investors);
+    const investor = await Investor.findByPk(req.params.investorId);
+    if (!investor) {
+      const error = new Error(
+        `Investor with id ${req.params.investorId} not found`
+      );
+      error.status = 404;
+      throw error;
+    }
+    await investor.removeUser(req.params.userId);
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }
 });
 
-// remove a user from an investor's list by id
-router.delete(
-  "/:userId",
-  async (req, res, next) => {
-    try {
-      const investor = await Investor.findByPk(req.params.investorId);
-      if (!investor) {
-        const error = new Error(
-          `Investor with id ${req.params.investorId} not found`
-        );
-        error.status = 404;
-        throw error;
-      }
-      await investor.removeUser(req.params.userId);
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
-    }
-  }
-);
-
 // update an existing investor
 router.put("/:id", async (req, res, next) => {
   try {
-    const [numUpdated, [updatedInvestor]] = await Investor.update(
-      req.body,
-      {
-        where: { id: req.params.id },
-        returning: true,
-      }
-    );
+    const [numUpdated, [updatedInvestor]] = await Investor.update(req.body, {
+      where: { id: req.params.id },
+      returning: true,
+    });
     if (numUpdated === 0) {
       const error = new Error(`Investor with id ${req.params.id} not found`);
       error.status = 404;

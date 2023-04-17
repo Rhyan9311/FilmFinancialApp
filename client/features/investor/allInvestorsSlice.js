@@ -1,40 +1,34 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchAllInvestors = createAsyncThunk(
-  "investors/fetchAllInvestors",
-  async () => {
-    try {
-      const { data } = await axios.get(`/api/investors`);
-      return data;
-    } catch (err) {
-      console.log(err);
-    }
+// Define initial state as an empty array
+const initialState = [];
+
+export const fetchAllInvestors = createAsyncThunk("allInvestors", async () => {
+  try {
+    const response = await axios.get(`/api/investors`);
+    console.log("Data received from backend:", response.data);
+    return response.data;
+  } catch (err) {
+    console.log("Error fetching data:", err);
   }
-);
+});
 
 const investorSlice = createSlice({
   name: "investor",
-  initialState: {
-    investors: [],
-    status: "idle",
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchAllInvestors.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchAllInvestors.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.investors = action.payload;
-      })
-      .addCase(fetchAllInvestors.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      });
+    builder.addCase(fetchAllInvestors.fulfilled, (state, action) => {
+      console.log("Action payload:", action.payload);
+      return action.payload;
+    });
   },
 });
+
+export const selectInvestors = (state) => {
+  console.log(state);
+  return state.investors;
+};
 
 export default investorSlice.reducer;

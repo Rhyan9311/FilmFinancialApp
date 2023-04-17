@@ -12,19 +12,6 @@ router.get("/filmmakers", async (req, res, next) => {
   }
 });
 
-// // GET /api/authors
-// router.get('/', async (req, res, next) => {
-//   try {
-//     const filmmakers = await Filmmaker.findAll({
-//       attributes: ['id', 'name'],
-//     })
-//     res.json(filmmakers)
-//   }
-//   catch (error) {
-//     next(error)
-//   }
-// })
-
 router.get("/:id", async (req, res, next) => {
   try {
     const filmmaker = await Filmmaker.findByPk(req.params.id);
